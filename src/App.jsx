@@ -331,6 +331,15 @@ function ContactPage() {
     setMessage('');
     const form = new FormData(event.currentTarget);
     const payload = Object.fromEntries(form.entries());
+    if (import.meta.env.BASE_URL === '/portfolio-website/') {
+      const subject = encodeURIComponent(`Portfolio enquiry: ${payload.projectType}`);
+      const body = encodeURIComponent(`Name: ${payload.name}\nEmail: ${payload.email}\nProject: ${payload.projectType}\n\n${payload.message}`);
+      window.location.href = `mailto:hammadpirxada@gmail.com?subject=${subject}&body=${body}`;
+      setStatus('success');
+      setMessage('Your email app is opening with the message. Send it there to finish.');
+      formElement.reset();
+      return;
+    }
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
